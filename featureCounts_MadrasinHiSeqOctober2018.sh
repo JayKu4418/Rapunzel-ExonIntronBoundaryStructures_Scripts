@@ -2,6 +2,8 @@
 
 # This script is going to get featureCounts using STAR alignment
 
+bamFolder="/data1/Madrasin_HiSeq_October2018/AlignmentFiles_Bowtie2_ShapeMapper2Parms"
+
 folderToCD="/home/jkumar12/Projects/ExonIntronBoundaryStructures/tmp/Madrasin_HiSeq_October2018_alignments"
 
 dataFolder="/home/jkumar12/Projects/ExonIntronBoundaryStructures/data"
@@ -24,7 +26,7 @@ cd ${folderToCD}
 for file in "DMSTreatedSample_TAGGCATG_S1" "NoDMSSample_CTCTCTAC_S2";
 do
     echo ${file}
-    featureCounts -p --largestOverlap -B -C -M -R SAM -t exon -g gene_id -a ${dataFolder}/${annotationFile} -F SAF -o ${file}_${1}_featureCounts.txt ${file}_MAPQgreaterThan10_SortedByCoords.bam
+    featureCounts -p --largestOverlap -B -C -M -R SAM -t exon -g gene_id -a ${dataFolder}/${annotationFile} -F SAF -o ${file}_${1}_featureCounts.txt ${bamFolder}/${file}_MAPQgreaterThan10_SortedByCoords.bam
     cut -f1,6,7 ${file}_${1}_featureCounts.txt > ${file}_${1}_featureCounts_JustCounts.txt
 done
 
