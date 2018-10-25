@@ -1,6 +1,6 @@
 #!/bin/bash
 
-folderToCD="/data1_1/Sequencing1_1/Madrasin_HiSeq_October2018" 
+folderToCD="/data1/Madrasin_HiSeq_October2018" 
 
 #datafolder="/home/jkumar12/Projects/Analyzing_SHAPEdata_In_Introns/data"
 

@@ -2,9 +2,11 @@
 
 # This script is going to get featureCounts using STAR alignment
 
-folderToCD="/home/jkumar12/Projects/ExonIntronBoundaryStructures/tmp/Madrasin_HiSeq_October2018_alignments"
+folderToCD="/data1/Madrasin_HiSeq_October2018/AlignmentFiles_Bowtie2_ShapeMapper2Parms"
 
 dataFolder="/home/jkumar12/Projects/ExonIntronBoundaryStructures/data"
+
+writeFolder="/home/jkumar12/Projects/ExonIntronBoundaryStructures/tmp/Madrasin_HiSeq_October2018_alignments"
 
 if [ "$1" = "Transcriptome" ]
 then
@@ -25,13 +27,9 @@ cd ${folderToCD}
 for file in "DMSTreatedSample_TAGGCATG_S1" "NoDMSSample_CTCTCTAC_S2";
 do
     echo ${file}
-    # Grab header for file
-    samtools view -H -o ${file}_JustHeader.sam ${file}.bam
-    # Grab mapped reads
-    samtools view -F 4 -o ${file}_MappedReads.sam ${file}.bam
     # Get multi mapped reads and single mapped reads 
-    grep XS:i ${file}_MappedReads.sam > ${file}_MultiMappedReads.sam
-    grep -v XS:i ${file}_MappedReads.sam > ${file}_SingleMappedReads.sam
+    samtools view -F 4 ${file}.bam | grep XS:i > ${file}_MultiMappedReads.sam
+    samtools view -F 4 ${file}.bam | grep -v XS:i > ${file}_SingleMappedReads.sam
     # Concatenate Header file with multimapped reads and get bam file
     cat ${file}_JustHeader.sam ${file}_MultiMappedReads.sam > ${file}_MultiMappedReadsPlusHeader.sam
     samtools view -b -o ${file}_MultiMappedReads.bam ${file}_MultiMappedReadsPlusHeader.sam
@@ -44,14 +42,12 @@ do
     # Remove sam files for singlemapped reads
     rm ${file}_SingleMappedReads.sam
     rm ${file}_SingleMappedReadsPlusHeader.sam
-    # Remove header sam file
-    rm ${file}_JustHeader.sam
     
-    featureCounts -p --largestOverlap -B -C -M -R SAM -t exon -g gene_id -a ${dataFolder}/${annotationFile} -F SAF -o ${file}_${1}_featureCounts_SingleMappedReads.txt ${file}_SingleMappedReads.bam
-    cut -f1,6,7 ${file}_${1}_featureCounts_SingleMappedReads.txt > ${file}_${1}_featureCounts_SingleMappedReads_JustCounts.txt
+    featureCounts -p --largestOverlap -B -C -M -R SAM -t exon -g gene_id -a ${dataFolder}/${annotationFile} -F SAF -o ${writeFolder}/${file}_${1}_featureCounts_SingleMappedReads.txt ${file}_SingleMappedReads.bam
+    cut -f1,6,7 ${writeFolder}/${file}_${1}_featureCounts_SingleMappedReads.txt > ${writeFolder}/${file}_${1}_featureCounts_SingleMappedReads_JustCounts.txt
     
-    featureCounts -p --largestOverlap -B -C -M -R SAM -t exon -g gene_id -a ${dataFolder}/${annotationFile} -F SAF -o ${file}_${1}_featureCounts_MultiMappedReads.txt ${file}_MultiMappedReads.bam
-    cut -f1,6,7 ${file}_${1}_featureCounts_MultiMappedReads.txt > ${file}_${1}_featureCounts_MultiMappedReads_JustCounts.txt
+    featureCounts -p --largestOverlap -B -C -M -R SAM -t exon -g gene_id -a ${dataFolder}/${annotationFile} -F SAF -o ${writeFolder}/${file}_${1}_featureCounts_MultiMappedReads.txt ${file}_MultiMappedReads.bam
+    cut -f1,6,7 ${writeFolder}/${file}_${1}_featureCounts_MultiMappedReads.txt > ${writeFolder}/${file}_${1}_featureCounts_MultiMappedReads_JustCounts.txt
     
 done
 
