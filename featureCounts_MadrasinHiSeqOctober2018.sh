@@ -20,6 +20,12 @@ then
 elif [ "$1" = "ExonIntron3p" ]
 then
     annotationFile="SAFformat_ExtractedExonIntronCoordinatesFromGFFfile_3p_OnlyGenes.bed"
+elif [ "$1" = "Intron5p" ]
+then
+    annotationFile="SAFformat_ExtractedIntronCoordinatesFromGFFfile_5p_OnlyTranscriptIDs.bed"
+elif [ "$1" = "Intron3p" ]
+then
+    annotationFile="SAFformat_ExtractedIntronCoordinatesFromGFFfile_3p_OnlyTranscriptIDs.bed"
 fi
 
 cd ${folderToCD}
