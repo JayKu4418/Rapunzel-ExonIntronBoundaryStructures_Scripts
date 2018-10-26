@@ -31,13 +31,13 @@ do
     samtools view -F 4 ${file}.bam | grep XS:i > ${file}_MultiMappedReads.sam
     samtools view -F 4 ${file}.bam | grep -v XS:i > ${file}_SingleMappedReads.sam
     # Concatenate Header file with multimapped reads and get bam file
-    cat ${file}_JustHeader.sam ${file}_MultiMappedReads.sam > ${file}_MultiMappedReadsPlusHeader.sam
+    cat ${file}_Header.sam ${file}_MultiMappedReads.sam > ${file}_MultiMappedReadsPlusHeader.sam
     samtools view -b -o ${file}_MultiMappedReads.bam ${file}_MultiMappedReadsPlusHeader.sam
     # Remove sam files for multimapped reads
     rm ${file}_MultiMappedReads.sam
     rm ${file}_MultiMappedReadsPlusHeader.sam
     # Concatenate Header file with single mapped reads and get bam file
-    cat ${file}_JustHeader.sam ${file}_SingleMappedReads.sam > ${file}_SingleMappedReadsPlusHeader.sam
+    cat ${file}_Header.sam ${file}_SingleMappedReads.sam > ${file}_SingleMappedReadsPlusHeader.sam
     samtools view -b -o ${file}_SingleMappedReads.bam ${file}_SingleMappedReadsPlusHeader.sam
     # Remove sam files for singlemapped reads
     rm ${file}_SingleMappedReads.sam
