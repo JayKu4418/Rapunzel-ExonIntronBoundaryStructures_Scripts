@@ -21,7 +21,7 @@ do
     samtools view -b -o ${folderToWriteTo}/${file}.bam ${folderToWriteTo}/${file}.sam
     
     echo "Get header file separately from SAM file........."
-    samtools view -h -o ${folderToWriteTo}/${file}_Header.sam ${folderToWriteTo}/${file}.sam
+    samtools view -H -o ${folderToWriteTo}/${file}_Header.sam ${folderToWriteTo}/${file}.sam
     
     echo "Remove SAM file..........."
     rm ${folderToWriteTo}/${file}.sam
